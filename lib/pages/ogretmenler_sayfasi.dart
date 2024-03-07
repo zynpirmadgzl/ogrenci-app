@@ -26,7 +26,7 @@ class OgretmenlerSayfasi extends ConsumerWidget {
                     padding: EdgeInsets.symmetric(
                         horizontal:20,
                         vertical: 20),
-                    child: Text("${ogretmenlerRepository.ogretmenler.length}Öğretmen",
+                    child: Text("${ogretmenlerRepository.ogretmenler.length} Öğretmen",
                       style: TextStyle(
                         fontSize: 15,
                       ),),
@@ -37,7 +37,7 @@ class OgretmenlerSayfasi extends ConsumerWidget {
                   child: IconButton(
                     icon:const Icon(Icons.download),
                     onPressed: ((){
-                      ref.read(ogretmenlerProvider);
+                      ref.read(ogretmenlerProvider).indir();
                     }),
                   ),
                 ),
