@@ -32,14 +32,9 @@ class OgretmenlerSayfasi extends ConsumerWidget {
                       ),),
                   ),
                 ),
-                Align(
+                const Align(
                   alignment:Alignment.centerRight,
-                  child: IconButton(
-                    icon:const Icon(Icons.download),
-                    onPressed: ((){
-                      ref.read(ogretmenlerProvider).indir();
-                    }),
-                  ),
+                  child: OgretmenIndirmeButonu(),
                 ),
               ],
             ),
@@ -56,6 +51,46 @@ class OgretmenlerSayfasi extends ConsumerWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class OgretmenIndirmeButonu extends StatefulWidget {
+  const OgretmenIndirmeButonu({
+    super.key,
+  });
+
+  @override
+  State<OgretmenIndirmeButonu> createState() => _OgretmenIndirmeButonuState();
+}
+
+class _OgretmenIndirmeButonuState extends State<OgretmenIndirmeButonu> {
+  bool isLoading=false;
+  @override
+  Widget build(BuildContext context) {
+    return Consumer(
+      builder:(context,ref,child){
+        return isLoading ? const CircularProgressIndicator():IconButton(
+          icon:const Icon(Icons.download),
+          onPressed: (() async {
+            try{
+              setState(() {
+                isLoading=true;
+              });
+              await ref.read(ogretmenlerProvider).indir();
+            }catch(e){
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(e.toString())),
+              );
+            }
+            finally{
+              setState(() {
+                isLoading=false;
+              });
+            }
+          }),
+        );
+      }
     );
   }
 }

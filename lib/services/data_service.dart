@@ -1,21 +1,17 @@
 import 'dart:convert';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../models/ogretmen.dart';
+import 'package:http/http.dart' as http;
 
 class DataService{
-Ogretmen ogretmenIndir(){
-  final j ="""{
-  
-    "ad":"Yeni",
-    "soyad":"Yenioğlu",
-    "yas":21,
-    "cinsiyet":"Erkek",
-  }""";
-  final m=jsonDecode(j);
-  final ogretmen=Ogretmen.fromMap(m);
-  return ogretmen;
+  final String baseUrl="https://65e96f14c9bf92ae3d39221f.mockapi.io/";
+Future<Ogretmen> ogretmenIndir() async {
+  final response=await http.get(Uri.parse("$baseUrl /ogretmen/1"));
+  if (response.statusCode == 200) {
+    return Ogretmen.fromMap(jsonDecode(response.body) as Map<String, dynamic>);
+  } else {
+    throw Exception('Öğretmen indirilemedi ${response.statusCode}');
+  }
 }
 }
 final dataServiceProvider=Provider((ref){
