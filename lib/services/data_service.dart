@@ -14,6 +14,18 @@ Future<Ogretmen> ogretmenIndir() async {
   }
 }
 Future<void> ogretmenEkle(Ogretmen ogretmen) async {
+  final response=await http.post(
+    Uri.parse("$baseUrl /ogretmen"),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(ogretmen.toMap()),
+  );
+  if (response.statusCode == 201) {
+    return;
+  } else {
+    throw Exception('Öğretmen eklenemedi ${response.statusCode}');
+  }
 
 }
 }

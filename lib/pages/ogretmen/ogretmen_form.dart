@@ -15,6 +15,7 @@ class OgretmenForm extends ConsumerStatefulWidget{
 class _OgretmenFormState extends ConsumerState<OgretmenForm> {
   final Map<String,dynamic> girilen ={};
   final _formKey =GlobalKey<FormState>();
+  bool isSaving=false;
 
   @override
   Widget build(BuildContext context) {
@@ -90,11 +91,13 @@ class _OgretmenFormState extends ConsumerState<OgretmenForm> {
                   },
                   validator: (value){
                       if(value==null)
-                        return "Lütfen cinsiyrrt seçiniz";
+                        return "Lütfen cinsiyet seçiniz";
                   },
 
             ),
-        ElevatedButton(
+        isSaving
+            ?const CircularProgressIndicator()
+            :ElevatedButton(
             onPressed: (){
               final formState=_formKey.currentState;
               if(formState==null ) return;
@@ -114,9 +117,25 @@ class _OgretmenFormState extends ConsumerState<OgretmenForm> {
       );
   }
   Future<void> _kaydet() async {
-    await ref.read(dataServiceProvider).ogretmenEkle(
-        Ogretmen.fromMap(girilen),
-    );
+    try{
+      setState(() {
+        isSaving=true;
+      });
+      await ref.read(dataServiceProvider).ogretmenEkle(
+          Ogretmen.fromMap(girilen));
+      Navigator.of(context).pop(true);
+    }catch(e){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
+    }
+    finally{
+      setState(() {
+        isSaving=false;
+      });
+    }
   }
 }
+
+
 
