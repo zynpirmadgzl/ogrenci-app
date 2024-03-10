@@ -13,6 +13,9 @@ Future<Ogretmen> ogretmenIndir() async {
     throw Exception('Öğretmen indirilemedi ${response.statusCode}');
   }
 }
+Future<void> ogretmenEkle(Ogretmen ogretmen) async {
+
+}
 }
 final dataServiceProvider=Provider((ref){
   return DataService();

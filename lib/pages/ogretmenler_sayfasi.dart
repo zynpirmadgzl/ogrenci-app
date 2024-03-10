@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ogrenci_app/repository/ogretmenler_repository.dart';
 
 import '../models/ogretmen.dart';
+import 'ogretmen/ogretmen_form.dart';
 
 class OgretmenlerSayfasi extends ConsumerWidget {
   const OgretmenlerSayfasi({super.key});
@@ -50,6 +51,16 @@ class OgretmenlerSayfasi extends ConsumerWidget {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: ((){
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context){
+                return const OgretmenForm();
+              },),
+          );
+        }),
+        child: const Icon(Icons.add),
       ),
     );
   }
