@@ -8,7 +8,7 @@ class DataService{
 Future<Ogretmen> ogretmenIndir() async {
   final response=await http.get(Uri.parse("$baseUrl /ogretmen/1"));
   if (response.statusCode == 200) {
-    return Ogretmen.fromMap(jsonDecode(response.body) as Map<String, dynamic>);
+    return Ogretmen.fromMap(jsonDecode(response.body) );
   } else {
     throw Exception('Öğretmen indirilemedi ${response.statusCode}');
   }
@@ -28,6 +28,16 @@ Future<void> ogretmenEkle(Ogretmen ogretmen) async {
   }
 
 }
+
+  Future<List<Ogretmen>> ogretmenleriGetir() async {
+    final response=await http.get(Uri.parse("$baseUrl /ogretmen/1"));
+    if (response.statusCode == 200) {
+      final l=jsonDecode(response.body);
+      return l.map<Ogretmen>((e)=>Ogretmen.fromMap(e)).toList();
+    } else {
+      throw Exception('Öğretmenler getirilemedi ${response.statusCode}');
+    }
+  }
 }
 final dataServiceProvider=Provider((ref){
   return DataService();

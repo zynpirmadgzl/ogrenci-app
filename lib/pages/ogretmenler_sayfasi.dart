@@ -41,14 +41,27 @@ class OgretmenlerSayfasi extends ConsumerWidget {
             ),
           ),
           Expanded(
-            child: ListView.separated(
-              itemBuilder: (context,index)=> OgretmenSatiri(
-                ogretmenlerRepository.ogretmenler[index],
-              ),
-              separatorBuilder: (context,index)=>const Divider(),
-              itemCount: ogretmenlerRepository.ogretmenler.length,
+            child:RefreshIndicator(
+              onRefresh: () async {
+                ref.refresh(ogretmenListesiProvider);
+              },
+              child: ref.watch(ogretmenListesiProvider).when(
+                  data: (data)=>ListView.separated(
+                    itemBuilder: (context,index)=> OgretmenSatiri(
+                      data[index],
+                    ),
+                    separatorBuilder: (context,index)=>const Divider(),
+                    itemCount: data.length,
 
-            ),
+                  ),
+                  error: (error, stackTrace) {
+                    return const Text("Error");
+                  },
+                  loading:() {
+                    return const Center(child: CircularProgressIndicator(),);
+                  },
+            )
+          ),
           ),
         ],
       ),

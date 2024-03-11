@@ -117,23 +117,37 @@ class _OgretmenFormState extends ConsumerState<OgretmenForm> {
       );
   }
   Future<void> _kaydet() async {
-    try{
-      setState(() {
-        isSaving=true;
-      });
-      await ref.read(dataServiceProvider).ogretmenEkle(
-          Ogretmen.fromMap(girilen));
-      Navigator.of(context).pop(true);
-    }catch(e){
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
-      );
+    bool bitti=false;
+    while(!bitti){
+      try{
+        setState(() {
+          isSaving=true;
+        });
+        await gercektenKaydet();
+        bitti=true;
+        Navigator.of(context).pop(true);
+      }catch(e){
+        final snackBar = ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString())),
+        );
+        await snackBar.closed;
+      }
+      finally{
+        setState(() {
+          isSaving=false;
+        });
+      }
     }
-    finally{
-      setState(() {
-        isSaving=false;
-      });
+
+  }
+    int i=0;
+  Future<void> gercektenKaydet() async {
+    i++;
+    if(i<3){
+      throw "Kayıt yapılamadı!";
     }
+    await ref.read(dataServiceProvider).ogretmenEkle(
+        Ogretmen.fromMap(girilen));
   }
 }
 
