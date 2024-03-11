@@ -55,7 +55,9 @@ class OgretmenlerSayfasi extends ConsumerWidget {
 
                   ),
                   error: (error, stackTrace) {
-                    return const Text("Error");
+                    return SingleChildScrollView(
+                        child: const Text("Error"),
+                        physics:AlwaysScrollableScrollPhysics() ,);
                   },
                   loading:() {
                     return const Center(child: CircularProgressIndicator(),);
